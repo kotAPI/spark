@@ -2,18 +2,17 @@ import actions from './actions'
 import mutations from './mutations'
 
 const state = ()=>({
-  artists:{}
+  playlist:[],
+  currentSong:''
 })
 
 const getters = {
-  getArtists: state =>{
-    return state.artists
-  },
-  getArtistByName:(state)=>{
-    return function(args){
-      return state.artists[args]
+    getPlaylist:state=>{
+      return state.playlist
+    },
+    getCurrentSong:state=>{
+      return state.currentSong
     }
-  }
 }
 
 const module ={

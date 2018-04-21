@@ -1,4 +1,4 @@
-# Edyst Vue Boilerplate
+# Spark (Spotify + Grooveshark)
 
 ### Commiting your changes to Git
 Using commitizen solves a lot of Git commit style problems and helps keep your Git commmit messages consistent across teams, this boilerplate comes with commitizen. 

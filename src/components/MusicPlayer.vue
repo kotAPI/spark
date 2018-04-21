@@ -21,15 +21,20 @@
                     <div class="small-12 columns">
                         <div class="controls-container">
                             <i class="material-icons controls-icon">shuffle</i>
-                            <i class="material-icons controls-icon">skip_previous</i>
+                            <i class="material-icons controls-icon" @click="previousSong">skip_previous</i>
                             <span class="play-button" @click="playOrPause" >
                                 <i class="material-icons play-icon">
                                     {{!playing?'play_arrow':'pause'}}
                                 </i>
                                 
                             </span>
-                            <i class="material-icons controls-icon">skip_next</i>
-                            <i class="material-icons controls-icon">repeat</i>
+                            <i class="material-icons controls-icon" @click="nextSong">skip_next</i>
+                            <span>
+                                <i :class="applyRepeatClasses()" @click="repeatToggler">
+                                    {{repeatCode==2?'repeat_one':'repeat'}}
+                                </i>
+                                <!-- <i class="material-icons">repeat_one</i> -->
+                            </span>
                         </div>
                         <div>
                             <input type="range" min="1" max="100" :value="songPlayedPercentage" id="slider" class="slider" @change="seekToDuration($event)">
@@ -38,15 +43,28 @@
                     </div>
                 </div>
             </div>
-            <div class="small-2 columns">
-                c
+            <div class="small-2 columns" style="margin-top:16px;">
+                <div class="row">
+                    <div class="small-3 columns">
+                        <i class="material-icons volume-custom-class">volume_up</i>
+                    </div>
+                    <div class="small-5 columns">
+                        <Slider :percentage="soundSliderPercentage" @SLIDER_CLICKED="handleSoundChangeEvent" />  
+                    </div>
+                </div>
+                
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import siteConfig from '@/utils/urlConfig.js'
+import Slider from '@/components/shared/Slider'
+import {mapGetters,mapActions} from 'vuex'
+
 export default {
+  components:{Slider},
   data(){
       return{
           audioObject:undefined,
@@ -63,24 +81,105 @@ export default {
           ///Song Details
           currentPlayingSongArtist:{name:'',slug:''},
           currentPlayingSongName:undefined,
-          currentPlayingSongThumb:undefined
+          currentPlayingSongThumb:undefined,
+          currentPlayingTrackIndex:undefined,
+          //
+          repeatCode:1,
+          // 
+          songQueue:undefined,
+
+          soundSliderPercentage:100
       }
   },
+    computed: {
+    ...mapGetters('playlist', [
+      'getPlaylist','getCurrentSong'
+    ])
+  },
   methods:{
+      ...mapActions('playlist', [
+        'LOAD_CURRENT_SONG'
+        ]),
+        handleSoundChangeEvent(e){
+            this.soundSliderPercentage = e
+            this.adjustVolume()
+        },
+      adjustVolume(){
+          this.audioObject.volume = this.soundSliderPercentage/100
+      },
+      nextSong(){
+          if(this.currentPlayingTrackIndex<this.songQueue.length-1){
+                    this.currentPlayingTrackIndex++;
+
+                    this.songPlayedPercentage = 0
+                    this.audioObject.currentTime = 0
+
+                    this.LOAD_CURRENT_SONG(this.songQueue[this.currentPlayingTrackIndex].path)
+
+                    var url=siteConfig.siteURL +"/"+this.songQueue[this.currentPlayingTrackIndex].path
+
+                    this.audioObject.src = url
+                    this.audioObject.play()
+                    this.intervalID = setInterval(this.tickUpdater,800)
+                    return
+              }
+      },
+      previousSong(){
+          if(this.currentPlayingTrackIndex>0){
+                    this.currentPlayingTrackIndex--;
+
+                    this.songPlayedPercentage = 0
+                    this.audioObject.currentTime = 0
+
+                    this.LOAD_CURRENT_SONG(this.songQueue[this.currentPlayingTrackIndex].path)
+
+                    var url=siteConfig.siteURL +"/"+this.songQueue[this.currentPlayingTrackIndex].path
+
+                    this.audioObject.src = url
+                    this.audioObject.play()
+                    this.intervalID = setInterval(this.tickUpdater,800)
+                    return
+              }
+      },
+      repeatToggler(){
+          // 0 means false
+          // 1 means repeat tracks
+          // 2 means repeat single track
+          if(this.repeatCode==0){
+              this.repeatCode =1
+              return
+          }
+          else if(this.repeatCode==1){
+              this.repeatCode=2
+              return
+          }
+          else if(this.repeatCode==2){
+              this.repeatCode =0
+              return
+          }
+      },
+      applyRepeatClasses(){
+          var classes = ['material-icons', 'controls-icon']
+          if(this.repeatCode!==0){
+              classes.push('repeat-on')
+          }
+          return classes.join(' ')
+      },
       playSongByPath(path,artistObject,songName){
         this.currentPlayingSongArtist = artistObject
         this.currentPlayingSongName = songName
    
-        var url= document.referrer.split( '/' );
-        url = url[0]+"//"+url[1]+url[2]
+        var url=siteConfig.siteURL
 
         var string = url+"/"+path
-        
+
         
         this.currentPlayingSongThumb = url+"/"+artistObject.thumb
         this.currentPlayingTrack = path
         this.audioObject.src=string
         this.playOrPause()
+
+
       },
       getCurrentPlayingSong(){
           return this.currentPlayingTrack
@@ -89,8 +188,44 @@ export default {
           clearInterval(this.intervalID)
           this.currentTime = 0
           this.songPlayedPercentage = 0;
-          this.playing=false
 
+          if(this.repeatCode==2){
+              this.currentTime = 0
+              
+              this.songPlayedPercentage = 0
+              this.audioObject.currentTime = 0
+              this.audioObject.play()
+              this.intervalID = setInterval(this.tickUpdater,800)
+              return
+          }
+          if(this.repeatCode==0){
+
+              
+             this.nextSong()
+              
+
+          }
+          if(this.repeatCode==1){
+              if(this.currentPlayingTrackIndex<this.songQueue.length-1){
+                    this.currentPlayingTrackIndex++;
+              }
+              else if(this.currentPlayingTrackIndex==this.songQueue.length-1){
+                  this.currentPlayingTrackIndex =0
+              }
+
+            this.songPlayedPercentage = 0
+            this.audioObject.currentTime = 0
+
+            var url=siteConfig.siteURL +"/"+this.songQueue[this.currentPlayingTrackIndex].path
+
+            this.audioObject.src = url
+            this.audioObject.play()
+            this.intervalID = setInterval(this.tickUpdater,800)
+            return
+          }
+          
+          
+          this.playing=false
       },
       seekToDuration(event){
           var seekPercentage = event.target.value
@@ -126,15 +261,23 @@ export default {
           this.soundTotalDuration = this.audioObject.duration
 
           this.songPlayedPercentage = this.currentTime/this.soundTotalDuration*100
+      },
+      setCurrentPlayList(playlist,currentTrackIndex){
+          this.currentPlayingTrackIndex = currentTrackIndex
+          this.songQueue = playlist
       }
   },
   mounted(){
+    
+    this.songQueue = this.getPlaylist
     if(this.audioObject == undefined){
         //
         //asdas
         this.audioObject =  new Audio();
         this.audioObject.src = this.currentPlayingTrack
         this.audioObject.onended = this.endSong
+
+        this.adjustVolume()
     }
     
   }
@@ -143,6 +286,17 @@ export default {
 
 
 <style>
+    .volume-custom-class{
+    position: relative;
+    top: -10px;
+    text-align: right;
+    width: 100%;
+    padding-right: 10px;
+    color:white;
+    }
+    .repeat-on{
+        color:#8de88d !important;
+    }
     #slider{
         position: relative;
         top:6px;
