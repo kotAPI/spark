@@ -11,7 +11,7 @@
           <div @click="goToPage('/')">LOGO</div>
           <div class="menu-category">
             <div class="menu-category-title">SEARCH</div>
-            <input type="text" class="search-bar">
+            <input type="text" class="search-bar" v-model="searchQuery" @input="performSearchQuery">
           </div>
           <div class="divider-category">&nbsp;</div>
           <div class="menu-category">
@@ -43,8 +43,10 @@
 import MusicPlayer from '@/components/MusicPlayer'
 export default {
   components:{MusicPlayer},
-  props: {
-    msg: String
+  data(){
+    return{
+      searchQuery:'',
+    }
   },
   mounted(){
     
@@ -52,13 +54,33 @@ export default {
   methods:{
     goToPage(url){
       this.$router.push("/"+url)
+    },
+    performSearchQuery(){
+      if(this.searchQuery.length>0){
+        this.$router.push("/search/"+this.searchQuery)
+      }
+      else{
+        this.$router.push("/")
+      }
+      
     }
   }
 }
 </script>
 
 <style>
-
+.section-cover-page{
+        background-image:url("https://orig00.deviantart.net/0450/f/2011/291/5/7/carbon_wallpaper_redone_by_5urface-d4d87gf.jpg");
+        position: fixed;
+        top:0px;
+        left:0px;
+        width:100%;
+        background-size:cover;
+        background-position: center;
+        height:100%;
+        z-index:1;
+        filter:brightness(0.5)
+    }
 /*
  *  STYLE 2
  */
@@ -102,7 +124,6 @@ body::-webkit-scrollbar-thumb {
     color:#bbafaf;
     text-transform:uppercase;
     font-weight: 500;
-    
     
   }
   .section-title-container{
@@ -198,4 +219,129 @@ body::-webkit-scrollbar-thumb {
     margin:0;
     overflow: hidden;
   }
+
+   .artist-search-name{
+        color: #c5c1c1;
+        text-align: center;
+        padding-top: 10px;
+        font-weight: 700;
+    }
+    .artist-img{
+        width:180px;
+        height:180px;
+        border-radius: 100px;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        margin: auto;
+        transition: background 0.8s;
+        cursor: pointer;
+    }
+    .artist-img:hover{
+        background-size: 170%;
+    }
+    .artist-search-container{
+        padding-top:20px;
+        position: relative;
+        z-index: 100;
+        width:200px;
+        height: 200px;
+        margin:auto;
+    }
+
+
+    .song-download-icon{
+        color:#afa7a7;
+    }
+    .song-download-icon:hover{
+        color:white;
+    }
+    .song-details-container{
+        padding-right:15px;
+        text-align: right;
+    }
+    .album-art-container{
+        width:200px;
+        height:200px;
+        margin:auto;
+        margin-bottom:30px;
+        margin-top:40px;
+        background-size: contain;
+        box-shadow:1px 1px 40px black;
+    }
+    .artist-song-item-text{
+        color:grey;
+    }
+    .artist-song-item-text:hover{
+        cursor: pointer;
+    }
+    .album-songs-item:hover>.row>.columns>.artist-song-item-text{
+        color:white !important;
+    }
+
+    .song-playing-icon{
+        position: relative;
+        top: 2px;
+        left: 10px;
+        color:#a0d65d;
+        
+    }
+    .album-song-index{
+        padding-right:4px;
+        color:#bcbcbc;
+    }
+    .album-songs-item{
+        width:90%;
+        color: #a5a5a5;
+        padding: 8px 20px;
+        cursor: default;
+        border-bottom: 1px solid #ffffff1f;
+        margin:auto;
+    }
+    .album-songs-item:hover{
+        color:white;
+    }
+    .album-songs-container{
+        padding-top:10px;
+        padding-bottom:10px;
+       padding-left:20px;
+    }
+    .album-release-year{
+        color: #9a9a9a;
+        font-size: 0.4em;
+    }
+    .album-title{
+        color: #e2dbdb;
+        font-size:2em;
+        font-weight: 700;
+    }
+    .album-container{
+        width:100%;
+        margin:4px 20px;
+        padding:10px;
+        cursor: default;
+        user-select: none;
+        
+    }
+    .artist-page-dp{
+        position: relative;
+        top:-32px;
+        width:120px;
+        height:120px;
+        border-radius:200px;
+        background-size:cover;
+
+    }
+    .section-cover-page{
+        background-image:url("http://wallpaperfav.com/wp-content/uploads/plixpapers1610/linkin_park_wallpaper_background_34788.jpg");
+        position: fixed;
+        top:0px;
+        left:0px;
+        width:100%;
+        background-size:cover;
+        background-position: center;
+        height:100%;
+        z-index:1;
+        filter:brightness(0.5)
+    }
 </style>

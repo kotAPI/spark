@@ -144,7 +144,7 @@ export default {
             var url = siteConfig.siteURL + "/" +album.album_art
 
             notification.notifySongPlaying(song.name, url,this.artist.name )
-            setTimeout(function() { notification.close() }, 2000);
+            
            
         },
         getAlbumIndexByName(name){
@@ -186,99 +186,6 @@ export default {
 
 
 <style>
-    .song-download-icon{
-        color:#afa7a7;
-    }
-    .song-download-icon:hover{
-        color:white;
-    }
-    .song-details-container{
-        padding-right:15px;
-        text-align: right;
-    }
-    .album-art-container{
-        width:200px;
-        height:200px;
-        margin:auto;
-        margin-bottom:30px;
-        margin-top:40px;
-        background-size: contain;
-        box-shadow:1px 1px 40px black;
-    }
-    .artist-song-item-text{
-        color:grey;
-    }
-    .artist-song-item-text:hover{
-        cursor: pointer;
-    }
-    .album-songs-item:hover>.row>.columns>.artist-song-item-text{
-        color:white !important;
-    }
-
-    .song-playing-icon{
-        position: relative;
-        top: 2px;
-        left: 10px;
-        color:#a0d65d;
-        
-    }
-    .album-song-index{
-        padding-right:4px;
-        color:#bcbcbc;
-    }
-    .album-songs-item{
-        width:90%;
-        color: #a5a5a5;
-        padding: 8px 20px;
-        cursor: default;
-        border-bottom: 1px solid #ffffff1f;
-        margin:auto;
-    }
-    .album-songs-item:hover{
-        color:white;
-    }
-    .album-songs-container{
-        padding-top:10px;
-        padding-bottom:10px;
-       padding-left:20px;
-    }
-    .album-release-year{
-        color: #9a9a9a;
-        font-size: 0.4em;
-    }
-    .album-title{
-        color: #e2dbdb;
-        font-size:2em;
-        font-weight: 700;
-    }
-    .album-container{
-        width:100%;
-        margin:4px 20px;
-        padding:10px;
-        cursor: default;
-        user-select: none;
-        
-    }
-    .artist-page-dp{
-        position: relative;
-        top:-32px;
-        width:120px;
-        height:120px;
-        border-radius:200px;
-        background-size:cover;
-
-    }
-    .section-cover-page{
-        background-image:url("http://wallpaperfav.com/wp-content/uploads/plixpapers1610/linkin_park_wallpaper_background_34788.jpg");
-        position: fixed;
-        top:0px;
-        left:0px;
-        width:100%;
-        background-size:cover;
-        background-position: center;
-        height:100%;
-        z-index:1;
-        filter:brightness(0.5)
-    }
+    
 </style>
 

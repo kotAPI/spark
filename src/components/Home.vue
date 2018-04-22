@@ -1,14 +1,24 @@
 <template>
-  <div>
-    Home
+ <div>
+      <div class="section-cover-page"></div>
+    <div class="section-title-container">
+        <div class="row">
+            <div class="small-12 columns">
+                <div class="section-mini-title">Home</div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="section-content-container">
+        
+    </div>
   </div>
 </template>
 
 <script>
-import notification from '@/utils/notification'
 export default {
   mounted(){
-    notification.notifySongPlaying("Whats my life","","asdasd")
+
   }
 }
 </script>
