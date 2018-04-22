@@ -184,8 +184,6 @@ export default {
           return this.currentPlayingTrack
       },
       endSong(){
-          clearInterval(this.intervalID)
-          
 
           if(this.repeatCode==2){
               this.currentTime = 0
@@ -206,9 +204,11 @@ export default {
           if(this.repeatCode==1){
               if(this.currentPlayingTrackIndex<this.songQueue.length-1){
                     this.currentPlayingTrackIndex++;
+                   
               }
               else if(this.currentPlayingTrackIndex==this.songQueue.length-1){
                   this.currentPlayingTrackIndex =0
+
               }
 
             this.songPlayedPercentage = 0
@@ -221,6 +221,7 @@ export default {
             this.intervalID = setInterval(this.tickUpdater,800)
             return
           }
+          clearInterval(this.intervalID)
           this.currentTime = 0
           this.songPlayedPercentage = 0;
           

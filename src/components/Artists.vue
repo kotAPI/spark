@@ -28,14 +28,15 @@
                                      <div class="album-art-container" :style=applyAlbumArtBackground(album.album_art)></div>
                                  </div>
                                  <div class="small-8 columns">
-                                     <div class="album-songs-item" v-for="(song,i) in album.songs" @click="playSong(song,album,i)">
+                                     <div class="album-songs-item" v-for="(song,i) in album.songs">
                                         <div class="row">
-                                            <div class="small-7 columns">
+                                            <div class="small-7 columns"  @click="playSong(song,album,i)">
                                                 <span class="album-song-index">{{i+1}} .</span>
                                                 <span class="artist-song-item-text">{{song.name}} </span> 
                                             </div>
                                             <div class="small-5 columns">
                                                 <div class="song-details-container">
+                                                    <a download :href="downloadSong(song.path)" target="_blank"><i class="material-icons song-download-icon">file_download</i></a>
                                                     <span><i class="material-icons song-playing-icon">{{markSongAsPlayingOrNot(song.path)}}</i></span>
                                                 </div>
                                                 
@@ -54,6 +55,7 @@
              </div>
          </div>
      </div>
+     <iframe id="download_iframe_hack" style="display:none;"></iframe>
 </div>
  
 </template>
@@ -86,6 +88,13 @@ export default {
      ...mapActions('playlist', [
         'LOAD_PLAYLIST','LOAD_CURRENT_SONG'
         ]),
+        downloadSong(songPath){
+            var url = siteConfig.siteURL + "/"
+            url += songPath
+
+            return  url
+            
+        },
         applyAlbumArtBackground(url){
             return "background-image:url("+siteConfig.siteURL+"/" +url+");"
         },
@@ -172,6 +181,12 @@ export default {
 
 
 <style>
+    .song-download-icon{
+        color:#afa7a7;
+    }
+    .song-download-icon:hover{
+        color:white;
+    }
     .song-details-container{
         padding-right:15px;
         text-align: right;
@@ -187,6 +202,9 @@ export default {
     }
     .artist-song-item-text{
         color:grey;
+    }
+    .artist-song-item-text:hover{
+        cursor: pointer;
     }
     .album-songs-item:hover>.row>.columns>.artist-song-item-text{
         color:white !important;
@@ -208,7 +226,7 @@ export default {
         color: #a5a5a5;
         padding: 8px 20px;
         cursor: default;
-        border-top: 1px solid #ffffff1f;
+        border-bottom: 1px solid #ffffff1f;
         margin:auto;
     }
     .album-songs-item:hover{
