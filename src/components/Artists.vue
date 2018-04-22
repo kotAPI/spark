@@ -61,6 +61,7 @@
 </template>
 
 <script>
+import notification from '@/utils/notification'
 import siteConfig from '@/utils/urlConfig.js'
 import {mapActions,mapGetters} from 'vuex'
 export default {
@@ -140,6 +141,10 @@ export default {
             song.name
             )
 
+            var url = siteConfig.siteURL + "/" +album.album_art
+
+            notification.notifySongPlaying(song.name, url,this.artist.name )
+            setTimeout(function() { notification.close() }, 2000);
            
         },
         getAlbumIndexByName(name){

@@ -9,7 +9,6 @@
         </div>
         
     </div>
-    <div v-for="x in Object.keys(artistsData)">{{x}}</div>
     <div class="section-content-container">
         <div class="row">
             <div class="small-3 columns" v-for="x in artistsData">
@@ -25,6 +24,7 @@
 </template>
 
 <script>
+
 
 import {mapGetters,mapActions} from 'vuex'
 

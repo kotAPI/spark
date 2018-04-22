@@ -7,8 +7,13 @@ Always use `yarn commit` to commit your changes, and follow the simple instructi
 
 
 // TODO
+
 keyboard shortcuts
+
 shuffle
-ability to download a song
+
 scrollbar css
-move the song data to a json file
+
+`ability to download a song - DONE`
+
+`move the song data to a json file DONE`
