@@ -58,6 +58,24 @@ export default {
 </script>
 
 <style>
+
+/*
+ *  STYLE 2
+ */
+
+body::-webkit-scrollbar {
+    width: 1em;
+}
+ 
+body::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+ 
+body::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+
   .section-content-container{
     position: relative;
     width:100%;
@@ -67,6 +85,7 @@ export default {
     z-index: 100;
     padding:10px;
     box-sizing: border-box;
+    background-color:rgba(0,0,0,0.4);
   }
   .img-responsive {
       display: block;

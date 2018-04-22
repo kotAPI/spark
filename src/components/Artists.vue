@@ -20,12 +20,33 @@
              <div class="row">
                  <div class="small-12 columns">
                      <div class="album-container">
+                         
                          <div class="album-title">{{album.name}} <span class="album-release-year">{{album.year}} </span></div>
                          <div class="album-songs-container">
-                             <div class="album-songs-item" v-for="(song,i) in album.songs" @click="playSong(song,album,i)">
-                                <span class="album-song-index">{{i+1}} .</span>  {{song.name}}  
-                                <span><i class="material-icons song-playing-icon">{{markSongAsPlayingOrNot(song.path)}}</i></span>
+                             <div class="row">
+                                 <div class="small-4 columns">
+                                     <div class="album-art-container" :style=applyAlbumArtBackground(album.album_art)></div>
+                                 </div>
+                                 <div class="small-8 columns">
+                                     <div class="album-songs-item" v-for="(song,i) in album.songs" @click="playSong(song,album,i)">
+                                        <div class="row">
+                                            <div class="small-7 columns">
+                                                <span class="album-song-index">{{i+1}} .</span>
+                                                <span class="artist-song-item-text">{{song.name}} </span> 
+                                            </div>
+                                            <div class="small-5 columns">
+                                                <div class="song-details-container">
+                                                    <span><i class="material-icons song-playing-icon">{{markSongAsPlayingOrNot(song.path)}}</i></span>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        
+                                    </div>
+                                 </div>
                              </div>
+                             
                          </div>
                      </div>
                      
@@ -65,6 +86,9 @@ export default {
      ...mapActions('playlist', [
         'LOAD_PLAYLIST','LOAD_CURRENT_SONG'
         ]),
+        applyAlbumArtBackground(url){
+            return "background-image:url("+siteConfig.siteURL+"/" +url+");"
+        },
         markSongAsPlayingOrNot(songPath){
             this.currentSongPath = this.getCurrentSong
             return this.currentSongPath===songPath?'volume_up':'a'
@@ -148,10 +172,31 @@ export default {
 
 
 <style>
+    .song-details-container{
+        padding-right:15px;
+        text-align: right;
+    }
+    .album-art-container{
+        width:200px;
+        height:200px;
+        margin:auto;
+        margin-bottom:30px;
+        margin-top:40px;
+        background-size: contain;
+        box-shadow:1px 1px 40px black;
+    }
+    .artist-song-item-text{
+        color:grey;
+    }
+    .album-songs-item:hover>.row>.columns>.artist-song-item-text{
+        color:white !important;
+    }
+
     .song-playing-icon{
         position: relative;
-        top: 6px;
+        top: 2px;
         left: 10px;
+        color:#a0d65d;
         
     }
     .album-song-index{
@@ -159,9 +204,12 @@ export default {
         color:#bcbcbc;
     }
     .album-songs-item{
+        width:90%;
         color: #a5a5a5;
-        padding: 0px 20px;
+        padding: 8px 20px;
         cursor: default;
+        border-top: 1px solid #ffffff1f;
+        margin:auto;
     }
     .album-songs-item:hover{
         color:white;
@@ -169,7 +217,7 @@ export default {
     .album-songs-container{
         padding-top:10px;
         padding-bottom:10px;
-        background-color:rgba(0,0,0,0.2);
+       padding-left:20px;
     }
     .album-release-year{
         color: #9a9a9a;
@@ -186,6 +234,7 @@ export default {
         padding:10px;
         cursor: default;
         user-select: none;
+        
     }
     .artist-page-dp{
         position: relative;

@@ -1,0 +1,29 @@
+"artistName":{  
+       "slug":"charlie-puth",
+       "name":"Charlie Puth",
+       "profile_pic":"assets/images/dp_charlieputh.jpg",
+       "cover_pic":"assets/images/cover_charlieputh.jpg",
+       "albums":[  
+          {  
+             "album_art":"assets/images/singles.jpg",
+             "name":"Singles",
+             "songs":[  
+                {  
+                   "name":"Attention",
+                   "path":"assets/songs/charlieputh/attention.mp3"
+                }
+             ]
+          },
+          {  
+             "album_art":"assets/images/album_art_voice_notes.jpg",
+             "name":"Voice Notes",
+             "year":"2018",
+             "songs":[  
+                {  
+                   "name":"How Long",
+                   "path":"assets/songs/charlieputh/how_long.mp3"
+                }
+             ]
+          }
+       ]
+}

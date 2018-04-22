@@ -84,7 +84,7 @@ export default {
           currentPlayingSongThumb:undefined,
           currentPlayingTrackIndex:undefined,
           //
-          repeatCode:1,
+          repeatCode:0,
           // 
           songQueue:undefined,
 
@@ -121,7 +121,6 @@ export default {
                     this.audioObject.src = url
                     this.audioObject.play()
                     this.intervalID = setInterval(this.tickUpdater,800)
-                    return
               }
       },
       previousSong(){
@@ -186,8 +185,7 @@ export default {
       },
       endSong(){
           clearInterval(this.intervalID)
-          this.currentTime = 0
-          this.songPlayedPercentage = 0;
+          
 
           if(this.repeatCode==2){
               this.currentTime = 0
@@ -217,13 +215,14 @@ export default {
             this.audioObject.currentTime = 0
 
             var url=siteConfig.siteURL +"/"+this.songQueue[this.currentPlayingTrackIndex].path
-
+            this.LOAD_CURRENT_SONG(this.songQueue[this.currentPlayingTrackIndex].path)
             this.audioObject.src = url
             this.audioObject.play()
             this.intervalID = setInterval(this.tickUpdater,800)
             return
           }
-          
+          this.currentTime = 0
+          this.songPlayedPercentage = 0;
           
           this.playing=false
       },
@@ -381,7 +380,7 @@ export default {
         position: fixed;
         bottom:0px;
         border:1px solid black;
-        z-index:100;
+        z-index:1000;
         background-color:rgba(0,0,0,0.95);
     }
 
